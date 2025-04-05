@@ -1,0 +1,19 @@
+# Конфигурация базы данных
+database:
+  host: localhost
+  port: 5432
+  user: ttk_user
+  password: "022402"  # Пароль, который вы установили
+  dbname: ttk_office
+  sslmode: disable    # Для разработки, в продакшене используйте "require"
+
+# Настройки сервера
+server:
+  port: 8080         # Порт, на котором будет работать приложение
+  session_key: "z7k9YbFp2mRq4v6w8yB3E5H7gKjMnQrT"  # Уникальный ключ сессии
+  session_timeout: 24h # Время жизни сессии (24 часа)
+
+# Дополнительные настройки
+logging:
+  level: "debug"     # Уровень логирования (debug/info/warn/error)
+  file: "logs/app.log" # Путь к файлу логов
