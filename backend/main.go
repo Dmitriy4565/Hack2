@@ -3,8 +3,8 @@ package main
 import (
 	"net/http"
 
-	"github.com/Dmitriy4565/Hackaton-2025/backend/auth"
-	"github.com/Dmitriy4565/Hackaton-2025/backend/pkg/database"
+	"github.com/Dmitriy4565/Hackaton-2025/ttk_office_organizer/backend/auth"
+	"github.com/Dmitriy4565/Hackaton-2025/ttk_office_organizer/backend/pkg/database"
 	"github.com/gin-gonic/gin"
 )
 

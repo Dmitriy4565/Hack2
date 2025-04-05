@@ -5,7 +5,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/Dmitriy4565/Hackaton-2025/backend/auth"
+	"github.com/Dmitriy4565/Hackaton-2025/ttk_office_organizer/backend/auth"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )

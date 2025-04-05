@@ -15,6 +15,7 @@ type User struct {
 	FullName  string         `gorm:"column:full_name;not null;size:100"`
 	Password  string         `gorm:"column:password;not null"`
 	IsAdmin   bool           `gorm:"column:is_admin;default:false;not null"`
+	Articles  []Article      `gorm:"foreignKey:AuthorID"`
 }
 
 // TableName явно указывает имя таблицы
