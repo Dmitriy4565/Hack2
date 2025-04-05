@@ -9,112 +9,113 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
-    // Кэшируем элементы DOM
-    const elements = {
-        dropdown: {
-            trigger: document.querySelector('.tasks-dropdown-trigger'),
-            menu: document.querySelector('.tasks-dropdown-menu')
-        },
-        counter: {
-            container: document.getElementById('dynamic-counter'),
-            display: document.getElementById('counter-display')
-        },
-        tasksGrid: document.getElementById('tasks-content'),
-        modal: {
-            element: document.getElementById('task-creation-modal'),
-            form: document.getElementById('new-task-form'),
-            closeBtn: document.querySelector('.close-modal'),
-            cancelBtn: document.getElementById('cancel-task-btn'),
-            submitBtn: document.querySelector('.submit-btn'), // Кнопка "Создать"
-            fields: {
-                name: document.getElementById('task-name'),
-                assignee: document.getElementById('task-assignee'),
-                creationDate: document.getElementById('task-creation-date'),
-                dueDate: document.getElementById('task-due-date'),
-                priority: document.getElementById('task-priority')
-            }
-        },
-        addTaskBtn: document.getElementById('add-task-button')
-    };
+    // Получаем все элементы DOM
+    const dropdownTrigger = document.querySelector('.tasks-dropdown-trigger');
+    const dropdownMenu = document.querySelector('.tasks-dropdown-menu');
+    const dynamicCounter = document.getElementById('dynamic-counter');
+    const counterDisplay = document.getElementById('counter-display');
+    const tasksGrid = document.getElementById('tasks-content');
+    const addTaskBtn = document.getElementById('add-task-button');
+    
+    // Элементы модального окна
+    const modal = document.getElementById('task-creation-modal');
+    const modalForm = document.getElementById('new-task-form');
+    const closeModalBtn = document.querySelector('.close-modal');
+    const cancelBtn = document.getElementById('cancel-task-btn');
+    const submitBtn = document.querySelector('.submit-btn');
+    
+    // Поля формы
+    const taskNameInput = document.getElementById('task-name');
+    const assigneeSelect = document.getElementById('task-assignee');
+    const creationDateInput = document.getElementById('task-creation-date');
+    const dueDateInput = document.getElementById('task-due-date');
+    const prioritySelect = document.getElementById('task-priority');
 
-    // Инициализация
-    init();
+    // Инициализация при загрузке
+    setCurrentDate();
+    setupEventListeners();
+    updateInterface();
 
-    function init() {
-        setupEventListeners();
-        updateInterface();
-        setCurrentDate();
+    function setCurrentDate() {
+        const today = new Date().toISOString().split('T')[0];
+        creationDateInput.value = today;
+        dueDateInput.min = today;
+        creationDateInput.readOnly = false;
     }
 
     function setupEventListeners() {
         // Выпадающее меню
-        elements.dropdown.trigger.addEventListener('click', handleDropdownToggle);
-        document.addEventListener('click', closeDropdown);
+        dropdownTrigger.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+            this.classList.toggle('active');
+        });
+        
+        document.addEventListener('click', function() {
+            dropdownMenu.classList.remove('show');
+            dropdownTrigger.classList.remove('active');
+        });
         
         document.querySelectorAll('.tasks-dropdown-item').forEach(item => {
-            item.addEventListener('click', () => {
-                state.currentTab = item.dataset.tab;
+            item.addEventListener('click', function() {
+                state.currentTab = this.getAttribute('data-tab');
                 updateInterface();
-                closeDropdown();
+                dropdownMenu.classList.remove('show');
+                dropdownTrigger.classList.remove('active');
                 loadTasks();
             });
         });
 
         // Модальное окно
-        elements.addTaskBtn.addEventListener('click', openModal);
-        elements.modal.closeBtn.addEventListener('click', closeModal);
-        elements.modal.cancelBtn.addEventListener('click', closeModal);
-        elements.modal.element.addEventListener('click', e => e.target === elements.modal.element && closeModal());
+        addTaskBtn.addEventListener('click', function() {
+            if (state.currentTab !== 'completed') {
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+                taskNameInput.focus();
+            }
+        });
+
+        closeModalBtn.addEventListener('click', closeModal);
+        cancelBtn.addEventListener('click', closeModal);
         
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
         // Обработка формы
-        elements.modal.submitBtn.addEventListener('click', handleFormSubmit);
-        elements.modal.form.addEventListener('submit', handleFormSubmit);
-    }
+        submitBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            handleFormSubmit();
+        });
 
-    // Обработчики событий
-    function handleDropdownToggle(e) {
-        e.stopPropagation();
-        elements.dropdown.menu.classList.toggle('show');
-        elements.dropdown.trigger.classList.toggle('active');
-    }
-
-    function closeDropdown() {
-        elements.dropdown.menu.classList.remove('show');
-        elements.dropdown.trigger.classList.remove('active');
-    }
-
-    function openModal() {
-        if (state.currentTab === 'completed') return;
-        
-        elements.modal.element.style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-        elements.modal.fields.name.focus();
+        modalForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            handleFormSubmit();
+        });
     }
 
     function closeModal() {
-        elements.modal.element.style.display = 'none';
+        modal.style.display = 'none';
         document.body.style.overflow = '';
-        elements.modal.form.reset();
+        modalForm.reset();
     }
 
-    function handleFormSubmit(e) {
-        e.preventDefault();
-        
-        // Проверка заполнения обязательных полей
-        if (!elements.modal.fields.name.value || 
-            !elements.modal.fields.dueDate.value || 
-            !elements.modal.fields.priority.value) {
-            alert('Пожалуйста, заполните все обязательные поля!');
+    function handleFormSubmit() {
+        // Проверка заполнения полей
+        if (!taskNameInput.value || !dueDateInput.value || !prioritySelect.value || !assigneeSelect.value) {
+            alert('Заполните все обязательные поля!');
             return;
         }
 
         const taskData = {
-            title: elements.modal.fields.name.value,
-            assignee: elements.modal.fields.assignee.value,
-            assigneeName: elements.modal.fields.assignee.options[elements.modal.fields.assignee.selectedIndex].text,
-            creationDate: elements.modal.fields.creationDate.value,
-            dueDate: elements.modal.fields.dueDate.value,
-            priority: elements.modal.fields.priority.value,
+            title: taskNameInput.value,
+            assignee: assigneeSelect.value,      // Используем значение, введённое пользователем
+            assigneeName: assigneeSelect.value,
+            creationDate: creationDateInput.value,
+            dueDate: dueDateInput.value,
+            priority: prioritySelect.value,
             status: state.currentTab
         };
         
@@ -122,33 +123,10 @@ document.addEventListener('DOMContentLoaded', function() {
         closeModal();
     }
 
-    // Основные функции
-    function updateInterface() {
-        const titles = {
-            current: 'Текущие задачи',
-            pending: 'Отложенные задачи',
-            completed: 'Выполненные задачи'
-        };
-        
-        // Обновляем выпадающий список
-        elements.dropdown.trigger.querySelector('span').textContent = titles[state.currentTab];
-        
-        // Обновляем счетчик
-        elements.counter.container.style.display = state.currentTab === 'completed' ? 'none' : 'block';
-        
-        if (state.currentTab !== 'completed') {
-            elements.counter.container.className = `task-counter-box ${state.currentTab}`;
-            elements.counter.container.querySelector('h3').textContent = titles[state.currentTab];
-            elements.counter.display.textContent = state.counts[state.currentTab];
-        }
-        
-        // Кнопка добавления
-        elements.addTaskBtn.style.display = state.currentTab !== 'completed' ? 'flex' : 'none';
-    }
-
     function createTask(taskData) {
         const taskCard = document.createElement('div');
         taskCard.className = `task-card ${taskData.priority}-priority`;
+        
         taskCard.innerHTML = `
             <div class="task-title">${taskData.title}</div>
             <div class="task-meta">
@@ -164,23 +142,43 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         `;
         
-        elements.tasksGrid.prepend(taskCard);
+        tasksGrid.insertBefore(taskCard, tasksGrid.firstChild);
         state.counts[state.currentTab]++;
         updateInterface();
     }
 
-    function setCurrentDate() {
-        const today = new Date().toISOString().split('T')[0];
-        elements.modal.fields.creationDate.value = today;
-        elements.modal.fields.dueDate.min = today;
+    function updateInterface() {
+        // Обновляем текст в триггере
+        const titles = {
+            current: 'Текущие задачи',
+            pending: 'Отложенные задачи',
+            completed: 'Выполненные задачи'
+        };
+        dropdownTrigger.querySelector('span').textContent = titles[state.currentTab];
         
-        // Разрешаем редактирование даты создания
-        elements.modal.fields.creationDate.readOnly = false;
+        // Управление счетчиком
+        if (state.currentTab === 'completed') {
+            dynamicCounter.style.display = 'none';
+        } else {
+            dynamicCounter.style.display = 'block';
+            dynamicCounter.className = `task-counter-box ${state.currentTab}`;
+            dynamicCounter.querySelector('h3').textContent = titles[state.currentTab];
+            counterDisplay.textContent = state.counts[state.currentTab];
+        }
+        
+        // Кнопка добавления
+        addTaskBtn.style.display = state.currentTab === 'completed' ? 'none' : 'flex';
     }
 
     function loadTasks() {
-        console.log(`Загрузка задач: ${state.currentTab}`);
+        console.log(`Загрузка задач для вкладки: ${state.currentTab}`);
         // Здесь будет загрузка задач с сервера
+    }
+
+    function formatDate(dateString) {
+        if (!dateString) return 'Не указана';
+        const options = { day: 'numeric', month: 'long', year: 'numeric' };
+        return new Date(dateString).toLocaleDateString('ru-RU', options);
     }
 
     function getPriorityText(priority) {
@@ -190,11 +188,5 @@ document.addEventListener('DOMContentLoaded', function() {
             high: 'Высокий'
         };
         return priorityMap[priority] || '';
-    }
-
-    function formatDate(dateString) {
-        if (!dateString) return 'Не указана';
-        const options = { day: 'numeric', month: 'long', year: 'numeric' };
-        return new Date(dateString).toLocaleDateString('ru-RU', options);
     }
 });

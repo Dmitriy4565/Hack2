@@ -116,3 +116,19 @@ loginForm.addEventListener("submit", function (e) {
     }
 });
 
+
+// запрет обычным пользователям посещать админку
+// document.addEventListener("DOMContentLoaded", () => {
+//     const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+  
+//     const adminLink = document.getElementById("admin-link");
+  
+//     if (adminLink) {
+//       adminLink.addEventListener("click", (event) => {
+//         if (!currentUser || currentUser.role !== "Администратор") {
+//           event.preventDefault(); // блокируем переход
+//           alert("Недостаточно прав для доступа к разделу Администрирование.");
+//         }
+//       });
+//     }
+//   });
