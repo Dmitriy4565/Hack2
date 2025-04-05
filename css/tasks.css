@@ -86,27 +86,25 @@
 }
 
 .add-task-btn {
-    background: #ffffff; /* Белый фон вместо бледного */
-    border: 2px dashed #2c7be5; /* Синяя пунктирная граница */
+    background: #ffffff;
+    border: 2px dashed #2c7be5;
     border-radius: 8px;
     padding: 20px;
     cursor: pointer;
-    color: #2c7be5; /* Синий текст */
-    font-weight: 600; /* Полужирный */
+    color: #2c7be5;
+    font-weight: 600;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(44, 123, 229, 0.1); /* Легкая тень */
+    box-shadow: 0 2px 8px rgba(44, 123, 229, 0.1);
 }
 
 .add-task-btn:hover {
-    background: #f0f5ff; /* Светло-синий при наведении */
-    border-color: #1a68d1; /* Темнее синий */
-    transform: translateY(-2px); /* Эффект приподнимания */
+    background: #f0f5ff;
+    border-color: #1a68d1;
+    transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(44, 123, 229, 0.15);
 }
 
-
-
-/* //Dropdown menu */
+/* Dropdown menu */
 .tasks-menu-item {
     position: relative;
 }
@@ -168,9 +166,7 @@
     padding: 2px 8px;
     font-size: 0.8em;
 }
-/* ...................... */
 
-/* секция счетчиков */
 .task-stats {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -217,13 +213,11 @@
     display: none !important;
 }
 
-/* Гарантированное скрытие для выполненных задач */
 body.tab-completed #dynamic-counter {
     display: none !important;
 }
 
-
-/* Первое определение */
+/* Модальные окна */
 .task-creation-modal {
     display: none;
     position: fixed;
@@ -237,107 +231,25 @@ body.tab-completed #dynamic-counter {
     justify-content: center;
 }
 
-/* Первое определение */
 .task-creation-modal .modal-content {
-    background: white;
+    background: black;
     border-radius: 8px;
     width: 90%;
-    max-width: 400px; /* Уменьшили ширину окна */
-    padding: 20px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    animation: modalFadeIn 0.3s ease-out;
-}
-
-@keyframes modalFadeIn {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.close-modal {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 24px;
-    cursor: pointer;
-}
-
-.task-creation-modal .form-group {
-    margin-bottom: 15px;
-}
-
-.task-creation-modal label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: 500;
-}
-
-.task-creation-modal input,
-.task-creation-modal select {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
-
-.task-creation-modal .form-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    margin-top: 20px;
-}
-
-/* Стили для приоритетов */
-.task-card.low-priority {
-    border-left: 4px solid #00d97e;
-}
-.task-card.medium-priority {
-    border-left: 4px solid #f6c343;
-}
-.task-card.high-priority {
-    border-left: 4px solid #e63757;
-}
-
-.task-priority-badge {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    padding: 3px 8px;
-    border-radius: 12px;
-    font-size: 0.8em;
-    background: #f0f4fa;
-}
-
-/* Второе определение */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1001;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.4);
-}
-
-.modal-content {
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-    width: 100%;
     max-width: 500px;
-    max-height: calc(100vh - 40px); /* Учитываем padding модального окна */
-    margin: 0 auto;
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
+    max-height: calc(100vh - 40px);
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    transition: transform 0.2s ease, opacity 0.2s ease;
     overflow-y: auto;
     padding: 20px;
 }
 
 .close-modal {
     position: absolute;
-    right: 20px;
     top: 10px;
+    right: 15px;
     font-size: 24px;
     cursor: pointer;
 }
@@ -353,7 +265,8 @@ body.tab-completed #dynamic-counter {
 }
 
 .form-group input,
-.form-group select {
+.form-group select,
+textarea {
     width: 100%;
     padding: 8px;
     border: 1px solid #ddd;
@@ -370,12 +283,7 @@ body.tab-completed #dynamic-counter {
     width: 100%;
 }
 
-/* Добавьте в ваш CSS */
 textarea {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
     resize: vertical;
     min-height: 80px;
     font-family: inherit;
@@ -390,26 +298,144 @@ textarea {
     line-height: 1.4;
 }
 
-.modal-content,
-.task-creation-modal .modal-content {
+/* Стили для поисковой строки */
+.search-bar {
+    margin-bottom: 15px;
+    text-align: center;
+}
+.search-bar input {
+    width: 80%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* Стили для кнопки истории изменений */
+.history-button-container {
+    text-align: right;
+    margin-bottom: 10px;
+}
+.history-button {
+    background: #2c7be5;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+.history-button:hover {
+    background: #1a68d1;
+}
+
+/* Стили для контекстного меню */
+.context-menu {
+    position: absolute;
+    z-index: 2000;
     background: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    display: none;
+    min-width: 180px;
+    padding: 5px 0;
+}
+.context-menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.context-menu-item {
+    padding: 8px 12px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+.context-menu-item:hover {
+    background: #f5f8fa;
+}
+.context-menu-item.submenu {
+    position: relative;
+}
+.context-menu-item.submenu > .submenu-options {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 100%;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    min-width: 160px;
+    padding: 5px 0;
+}
+.context-menu-item.submenu:hover > .submenu-options {
+    display: block;
+}
+
+/* Стили для модального окна истории изменений */
+#history-modal .modal-content {
+    background-color: #f9f9f9; /* светлый фон для лучшей читаемости */
     border-radius: 8px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
     width: 100%;
-    max-width: 500px;
+    max-width: 600px;
     max-height: calc(100vh - 40px);
-    position: absolute;
-    top: 30%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0.9); /* изменено */
-    transition: transform 0.2s ease, opacity 0.2s ease;
+    margin: 0 auto;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
     overflow-y: auto;
     padding: 20px;
+    color: #333; /* тёмный текст для контраста */
 }
 
-/* Адаптивность */
+#history-modal h2 {
+    color: #2c7be5; /* яркий заголовок */
+    margin-bottom: 15px;
+    font-size: 1.5em;
+    text-align: center;
+}
+#history-content {
+    max-height: 400px;
+    overflow-y: auto;
+    margin-top: 15px;
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+}
+
+.history-event {
+    background-color: #ffffff;
+    color: #333;
+    padding: 10px;
+    margin-bottom: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.9em;
+    line-height: 1.4;
+}
+.history-event:last-child {
+    margin-bottom: 0;
+}
+
+.neon-blob1{
+    width: 728px;
+    height: 369px;
+    position: absolute;
+    top: -119px;
+    left: 208px;
+    background: linear-gradient(90deg, #001AFF 57%, #00FF2A 80%);
+    filter: blur(179px);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    opacity: 0.7;
+    z-index: -1;
+    pointer-events: none;
+}
+
 @media (max-width: 768px) {
     .tasks-grid {
         grid-template-columns: 1fr;
+    }
+    .search-bar input {
+        width: 100%;
     }
 }
