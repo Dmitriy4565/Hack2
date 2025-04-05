@@ -2,11 +2,12 @@ package main
 
 import (
 	"log"
-	"ttk_office_organizer/internal/app/auth"
-	"ttk_office_organizer/internal/pkg/config"
-	"ttk_office_organizer/internal/pkg/database"
-	"ttk_office_organizer/internal/pkg/logger"
-	"ttk_office_organizer/internal/server"
+
+	"github.com/Dmitriy4565/Hackaton-2025/internal/app/auth"
+	"github.com/Dmitriy4565/Hackaton-2025/internal/pkg/config"
+	"github.com/Dmitriy4565/Hackaton-2025/internal/pkg/database"
+	"github.com/Dmitriy4565/Hackaton-2025/internal/pkg/logger"
+	"github.com/Dmitriy4565/Hackaton-2025/internal/server"
 )
 
 func main() {
