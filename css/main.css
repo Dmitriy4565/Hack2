@@ -1,0 +1,468 @@
+@import url(./info.css);
+@import url(./tasks.css);
+@import url(./admin.css);
+
+
+@font-face {
+    font-family: 'Unbounded';
+    src: url('./font/Unbounded-Light.woff2') format('woff2');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Unbounded';
+    src: url('./font/Unbounded-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+
+
+/**
+  Нормализация блочной модели
+ */
+ *,
+ ::before,
+ ::after {
+   box-sizing: border-box;
+ }
+ 
+ /**
+   Убираем внутренние отступы слева тегам списков,
+   у которых есть атрибут class
+  */
+ :where(ul, ol):where([class]) {
+   padding-left: 0;
+ }
+ 
+ /**
+   Убираем внешние отступы body и двум другим тегам,
+   у которых есть атрибут class
+  */
+ body,
+ :where(blockquote, figure):where([class]) {
+   margin: 0;
+ }
+ 
+ /**
+   Убираем внешние отступы вертикали нужным тегам,
+   у которых есть атрибут class
+  */
+ :where(
+   h1,
+   h2,
+   h3,
+   h4,
+   h5,
+   h6,
+   p,
+   ul,
+   ol,
+   dl
+ ):where([class]) {
+   margin-block: 0;
+ }
+ 
+ :where(dd[class]) {
+   margin-left: 0;
+ }
+ 
+ :where(fieldset[class]) {
+   margin-left: 0;
+   padding: 0;
+   border: none;
+ }
+ 
+ /**
+   Убираем стандартный маркер маркированному списку,
+   у которого есть атрибут class
+  */
+ :where(ul[class]) {
+   list-style: none;
+ }
+ 
+ :where(address[class]) {
+   font-style: normal;
+ }
+ 
+ /**
+   Обнуляем вертикальные внешние отступы параграфа,
+   объявляем локальную переменную для внешнего отступа вниз,
+   чтобы избежать взаимодействие с более сложным селектором
+  */
+ p {
+   --paragraphMarginBottom: 24px;
+ 
+   margin-block: 0;
+ }
+ 
+ /**
+   Внешний отступ вниз для параграфа без атрибута class,
+   который расположен не последним среди своих соседних элементов
+  */
+ p:where(:not([class]):not(:last-child)) {
+   margin-bottom: var(--paragraphMarginBottom);
+ }
+ 
+ 
+ /**
+   Упрощаем работу с изображениями и видео
+  */
+ img,
+ video {
+   display: block;
+   max-width: 100%;
+   height: auto;
+ }
+ 
+ /**
+   Наследуем свойства шрифт для полей ввода
+  */
+ input,
+ textarea,
+ select,
+ button {
+   font: inherit;
+ }
+ 
+ html {
+   /**
+     Пригодится в большинстве ситуаций
+     (когда, например, нужно будет "прижать" футер к низу сайта)
+    */
+   height: 100%;
+   /**
+     Убираем скачок интерфейса по горизонтали
+     при появлении / исчезновении скроллбара
+    */
+   scrollbar-gutter: stable;
+ }
+ 
+ /**
+   Плавный скролл
+  */
+ html,
+ :has(:target) {
+   scroll-behavior: smooth;
+ }
+ 
+ body {
+   /**
+     Пригодится в большинстве ситуаций
+     (когда, например, нужно будет "прижать" футер к низу сайта)
+    */
+   min-height: 100%;
+   /**
+     Унифицированный интерлиньяж
+    */
+   line-height: 1.5;
+ }
+ 
+ /**
+   Нормализация высоты элемента ссылки при его инспектировании в DevTools
+  */
+ a:where([class]) {
+   display: inline-flex;
+ }
+ 
+ /**
+   Курсор-рука при наведении на элемент
+  */
+ button,
+ label {
+   cursor: pointer;
+ }
+ 
+ /**
+   Приводим к единому цвету svg-элементы
+   (за исключением тех, у которых уже указан
+   атрибут fill со значением 'none' или начинается с 'url')
+  */
+ :where([fill]:not(
+   [fill="none"],
+   [fill^="url"]
+ )) {
+   fill: currentColor;
+ }
+ 
+ /**
+   Приводим к единому цвету svg-элементы
+   (за исключением тех, у которых уже указан
+   атрибут stroke со значением 'none')
+  */
+ :where([stroke]:not(
+   [stroke="none"],
+   [stroke^="url"]
+ )) {
+   stroke: currentColor;
+ }
+ 
+ /**
+   Чиним баг задержки смены цвета при взаимодействии с svg-элементами
+  */
+ svg * {
+   transition-property: fill, stroke;
+ }
+ 
+ /**
+   Приведение рамок таблиц в классический 'collapse' вид
+  */
+ :where(table) {
+   border-collapse: collapse;
+   border-color: currentColor;
+ }
+ 
+ /**
+   Удаляем все анимации и переходы для людей,
+   которые предпочитают их не использовать
+  */
+ @media (prefers-reduced-motion: reduce) {
+   *,
+   ::before,
+   ::after {
+     animation-duration: 0.01ms !important;
+     animation-iteration-count: 1 !important;
+     transition-duration: 0.01ms !important;
+     scroll-behavior: auto !important;
+   }
+ }
+
+ :root{
+    --color-gray: #A9A9A9;
+    --color-light: #FFFFFF;
+    --color-green: #9CF075;
+    --color-black: #000000;
+
+    --transition-duration: 0.2s; 
+
+    --font-family-base: 'Unbounded', sans-serif;
+
+    --border-radius-big: 4px;
+    --border-radius-small: 24px;
+
+    --input-hight: 48px;
+
+ }
+
+ body{
+    font-family: var(--font-family-base);
+    color: var(--color-light);
+    font-size: 15px;
+    line-height: 100%;
+    background-color: var(--color-black);
+ }
+
+a,
+button,
+textarea,
+svg *,
+input{
+    transition-duration: var(--transition-duration);
+}
+
+a{
+    color: var(--color-light);
+    text-decoration: none;
+    letter-spacing: 4%;
+}
+
+a:hover{
+    color: green;
+}
+
+.button{
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+  white-space: nowrap;
+  cursor: pointer;
+  color: var(--color-light);
+}
+
+.container{
+    margin-inline: auto;
+    max-width: 1200px;
+}
+
+/* переделать панель регистрации */
+  /* Стили для header-actions (добавьте в ваш CSS) */
+  .header-actions {
+    display: flex;
+    gap: 12px;
+    margin-left: auto; /* Выравнивание по правому краю */
+}
+
+.login-button{
+  width: 102px;
+  height: 39px;
+  border: 2px solid transparent; /* Прозрачная граница */
+  border-radius: 8px; /* Скругление углов (опционально) */
+  padding: 10px 29px;
+  
+  /* Градиентная граница через background */
+  background: 
+    linear-gradient(to right, #000, #000) padding-box, /* Основной фон */
+    linear-gradient(90deg, rgba(0, 26, 255, 1), rgba(0, 255, 42, 1)) border-box;
+  
+  /* Эффект свечения */
+  box-shadow: 
+    0 0 10px rgba(0, 26, 255, 0.5),
+    0 0 20px rgba(0, 255, 42, 0.3);
+}
+
+.register-button {
+  width: 277px;
+  height: 41px;
+  background: rgba(124, 124, 124, 0.25);
+  border-radius: 36px;
+  padding: 13px 16px 14px 17px;
+    
+}
+
+.green{
+  padding-left: 4px;
+  color: var(--color-green);
+}
+
+.header-button:hover {
+    opacity: 0.9;
+}
+
+/* Стили модальных окон */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 25px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 400px;
+    position: relative;
+}
+
+.close {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.modal h2 {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.modal input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.modal-submit {
+    width: 100%;
+    padding: 12px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* конец панели регистрации */
+
+.header{
+
+}
+
+.header__inner{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.header-logo{
+    width: 77px;
+    height: 38px;
+    flex-shrink: 0;
+    margin-right: 10px;
+    position: relative;
+}
+
+.neon-blob{
+    width: 728px;
+    height: 369px;
+    position: absolute;
+    top: -184px;
+    left: 357px;
+    
+    /* Градиент */
+    background: linear-gradient(
+      90deg, 
+      #001AFF 57%, 
+      #00FF2A 80%
+    );
+    
+    /* Сильное размытие */
+    filter: blur(179px);
+    
+    /* Форма (скругление для "пятна") */
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    
+    /* Прозрачность (опционально) */
+    opacity: 0.7;
+    z-index: -1; /* Отправляет пятно на задний план */
+    pointer-events: none;
+}
+
+.header-menu{
+    
+}
+
+.header-menu-list{
+    display: flex;
+    column-gap: 33px;
+    min-width: 720px;
+    justify-content: center;
+    align-items: center;
+}
+
+.active{
+    color: green;
+}
+
+.header-menu-item{
+    
+}
+
+.header-menu-link{
+
+}
+
+.header-actions{
+  margin-left: 10px;
+}
+
+.header-button{
+
+}
+
+.register-button{
+
+}

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Задачи</title>
+    <link rel="stylesheet" href="./css/main.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header__inner">
+                <a href="#" class="header-logo">
+                    <img src="./images/header-logo.png" alt="Hacaton logo" class="header-logo-image">
+                </a>
+                <!-- панель навигации -->
+                <nav class="header-menu">
+                    <ul class="header-menu-list">
+                        <li class="header-menu-item ">
+                            <a href="./index.html" class="header-menu-link active">Полезная информация</a>
+                        </li>
+                        <li class="header-menu-item">
+                            <a href="./tasks.html" class="header-menu-link">Задачи</a>
+                        </li>
+                        <li class="header-menu-item">
+                            <a href="#" class="header-menu-link">Администрирование</a>
+                        </li>
+                        <!-- Dropdown menu -->
+                        <li class="header-menu-item tasks-menu-item">
+                            <!-- Выпадающее меню задач -->
+                            <div class="tasks-dropdown-trigger">
+                                <span>Текущие задачи</span>  <!-- Убрал счетчик здесь -->
+                            </div>
+                            <div class="tasks-dropdown-menu">
+                                <div class="tasks-dropdown-item" data-tab="current">
+                                    <span>Текущие задачи</span>  <!-- И здесь -->
+                                </div>
+                                <div class="tasks-dropdown-item" data-tab="pending">
+                                    <span>Отложенные задачи</span>  <!-- И здесь -->
+                                </div>
+                                <div class="tasks-dropdown-item" data-tab="completed">
+                                    <span>Выполненные задачи</span>
+                                </div>
+                            </div>
+                        </li>
+                </nav>
+                <div class="header-actions">
+                    <button class="button header-button login-button">Войти</button>
+                    <button class="button header-button register-button">Зарегистрироваться</button>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main class="tasks-container">
+        <!-- Динамический счётчик -->
+        <div class="task-stats">
+            <div class="task-counter-box current" id="dynamic-counter">
+                <h3>Текущие задачи</h3>
+                <span class="task-count" id="counter-display">0</span>
+            </div>
+        </div>
+        
+        <!-- Контент задач -->
+        <div class="tasks-grid" id="tasks-content">
+            <!-- Задачи будут загружаться сюда -->
+        </div>
+        
+        <!-- Кнопка добавления задачи (только для текущих и отложенных) -->
+        <button class="add-task-btn" id="add-task-button">
+            <span>+ Добавить задачу</span>
+        </button>
+    </main>
+    
+    <footer></footer>
+
+
+    <!-- Два модуля для входа и регистрации -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Вход</h2>
+            <form id="login-form">
+                <input type="text" id="login-username" placeholder="Логин" required>
+                <input type="password" id="login-password" placeholder="Пароль" required>
+                <button type="submit" class="modal-submit">Войти</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="register-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Регистрация</h2>
+            <form id="register-form">
+                <input type="text" id="username" placeholder="Логин" pattern="[A-Za-z]+" required>
+                <input type="text" id="fullname" placeholder="ФИО" pattern="[А-Яа-яЁё\s]+" required>
+                <input type="password" id="password" placeholder="Пароль" required>
+                <input type="password" id="confirm-password" placeholder="Подтвердите пароль" required>
+                <button type="submit" class="modal-submit">Зарегистрироваться</button>
+            </form>
+        </div>
+    </div>
+
+    <!--Модальное окно  -->
+    <div id="task-creation-modal" class="task-creation-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Новая задача</h2>
+            <form id="new-task-form">
+                <!-- Название задачи -->
+                <div class="form-group">
+                    <label for="task-name">Название*</label>
+                    <input type="text" id="task-name" placeholder="Название задачи" required />
+                </div>
+    
+                <!-- Исполнитель -->
+                <div class="form-group">
+                    <label for="task-assignee">Исполнитель*</label>
+                    <input type="text" id="task-assignee" placeholder="ФИО ответственного" required />
+                </div>
+    
+                <!-- Описание задачи -->
+                <div class="form-group">
+                    <label for="task-description">Описание</label>
+                    <textarea id="task-description" placeholder="Подробное описание задачи"></textarea>
+                </div>
+    
+                <!-- Даты -->
+                <div class="form-group">
+                    <label for="task-creation-date">Дата создания</label>
+                    <input type="date" id="task-creation-date" readonly />
+                    <div class="date-hint">(автоматически)</div>
+                </div>
+    
+                <div class="form-group">
+                    <label for="task-due-date">Срок выполнения*</label>
+                    <input type="date" id="task-due-date" required />
+                    <div class="date-hint">(планируемая дата завершения)</div>
+                </div>
+    
+                <!-- Приоритет -->
+                <div class="form-group">
+                    <label for="task-priority">Приоритет*</label>
+                    <select id="task-priority" required>
+                        <option value="" disabled selected>Выберите приоритет</option>
+                        <option value="low">Низкий</option>
+                        <option value="medium">Средний</option>
+                        <option value="high">Высокий</option>
+                    </select>
+                </div>
+    
+                <div class="form-actions">
+                    <button type="button" id="cancel-task-btn" class="cancel-btn">Отмена</button>
+                    <button type="submit" class="submit-btn">Создать</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+
+    <script src="./js/tasks.js"></script>
+    <script src="./js/navigation.js" defer></script>
+    <script src="./js/main.js"></script>
+</body>
+</html>

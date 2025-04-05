@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Редактор статей</title>
+    <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="./css/info.css">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header__inner">
+                <a href="#" class="header-logo">
+                    <img src="./images/header-logo.png" alt="Hacaton logo" class="header-logo-image">
+                </a>
+                <div class="neon-blob"></div>
+                <nav class="header-menu">
+                    <ul class="header-menu-list">
+                        <li class="header-menu-item">
+                            <a href="#" class="header-menu-link active">Полезная информация</a>
+                        </li>
+                        <li class="header-menu-item">
+                            <a href="./tasks.html" class="header-menu-link">Задачи</a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="header-actions">
+                    <button class="button header-button login-button">Войти</button>
+                    <button class="button header-button register-button">Перейти что-бы <span class="green">зарегистрироваться*</span></button>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Вход</h2>
+            <form id="login-form">
+                <input type="text" id="login-username" placeholder="Логин" required>
+                <input type="password" id="login-password" placeholder="Пароль" required>
+                <button type="submit" class="modal-submit">Войти</button>
+            </form>
+        </div>
+    </div>
+    
+        <div id="register-modal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Регистрация</h2>
+                <form id="register-form">
+                    <input type="text" id="username" placeholder="Логин" pattern="[A-Za-z]+" required>
+                    <input type="text" id="fullname" placeholder="ФИО" pattern="[А-Яа-яЁё\s]+" required>
+                    <input type="password" id="password" placeholder="Пароль" required>
+                    <input type="password" id="confirm-password" placeholder="Подтвердите пароль" required>
+                    <button type="submit" class="modal-submit">Зарегистрироваться</button>
+                </form>
+            </div>
+        </div>
+    <main class="main">
+        <section class="articles-section container">
+            <h2>Статьи</h2>
+            <div class="articles-grid" id="articles-grid">
+                <div class="article-tile" oncontextmenu="showContextMenu(event, 1)">
+                    <img src="./images/article1.jpg" alt="Превью статьи">
+                    <h3>Первая статья</h3>
+                    <p>Создано: 01.04.2025</p>
+                    <p>Редактировал: Иванов И.И.</p>
+                </div>
+                <div class="article-tile" oncontextmenu="showContextMenu(event, 2)">
+                    <img src="./images/article2.jpg" alt="Превью статьи">
+                    <h3>Вторая статья</h3>
+                    <p>Создано: 02.04.2025</p>
+                    <p>Редактировал: Петров П.П.</p>
+                </div>
+                <div class="article-tile" oncontextmenu="showContextMenu(event, 3)">
+                    <img src="./images/article3.jpg" alt="Превью статьи">
+                    <h3>Третья статья</h3>
+                    <p>Создано: 03.04.2025</p>
+                    <p>Редактировал: Сидоров С.С.</p>
+                </div>
+                <div class="article-tile" oncontextmenu="showContextMenu(event, 4)">
+                    <img src="./images/article4.jpg" alt="Превью статьи">
+                    <h3>Четвертая статья</h3>
+                    <p>Создано: 04.04.2025</p>
+                    <p>Редактировал: Кузнецов К.К.</p>
+                </div>
+                <div class="article-tile" oncontextmenu="showContextMenu(event, 5)">
+                    <img src="./images/article5.jpg" alt="Превью статьи">
+                    <h3>Пятая статья</h3>
+                    <p>Создано: 05.04.2025</p>
+                    <p>Редактировал: Михайлов М.М.</p>
+                </div>
+            </div>
+            
+            <!-- Контекстное меню -->
+            <div id="context-menu" class="context-menu" style="display: none;">
+                <ul>
+                    <li onclick="editArticle()">Редактировать</li>
+                    <li onclick="deleteArticle()">Удалить</li>
+                </ul>
+            </div>
+            
+
+            <button class="history-button" onclick="openHistory()">История изменений</button>
+            <button class="button" onclick="openCreateArticleModal()">Создать новую статью</button>
+        </section>
+    </main>
+
+    <!-- Модальное окно для создания статьи -->
+    <div id="create-article-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeCreateArticleModal()">&times;</span>
+            <h2>Создание новой статьи</h2>
+            <form id="create-article-form">
+                <input type="text" id="article-title" placeholder="Название статьи" required>
+                <div id="editor-container" class="editor-container"></div>
+                <input type="file" id="article-image" accept="image/*">
+                <button type="submit" class="modal-submit">Создать статью</button>
+            </form>
+        </div>
+    </div>
+    <!-- Модальное окно для создания статьи -->
+    <div id="create-article-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeCreateArticleModal()">&times;</span>
+            <h2>Создание новой статьи</h2>
+            <form id="create-article-form">
+                <input type="text" id="article-title" placeholder="Название статьи" required>
+                <div id="editor-container" class="editor-container"></div>
+                <input type="file" id="article-image" accept="image/*">
+                <button type="submit" class="modal-submit">Создать статью</button>
+            </form>
+        </div>
+    </div>
+
+  <!-- Модальное окно для создания статьи -->
+<div id="create-article-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span class="close" onclick="closeCreateArticleModal()">&times;</span>
+        <h2>Создание статьи</h2>
+        <form id="create-article-form">
+            <label for="article-title">Название статьи:</label>
+            <input type="text" id="article-title" placeholder="Введите название" required>
+            <br><br>
+            <label for="article-image">Изображение:</label>
+            <input type="file" id="article-image" accept="image/*">
+            <br><br>
+            <div id="editor-container"></div> <!-- Редактор для контента -->
+            <br><br>
+            <button type="submit">Создать статью</button>
+        </form>
+    </div>
+</div>
+
+<!-- Модальное окно для редактирования статьи -->
+<div id="edit-article-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span class="close" onclick="closeEditArticleModal()">&times;</span>
+        <h2>Редактировать статью</h2>
+        <form id="edit-article-form">
+            <label for="edit-article-title">Название статьи:</label>
+            <input type="text" id="edit-article-title" placeholder="Введите название" required>
+            <br><br>
+            <label for="edit-article-image">Изображение:</label>
+            <input type="file" id="edit-article-image" accept="image/*">
+            <br><br>
+            <div id="edit-editor-container"></div> <!-- Редактор для контента -->
+            <br><br>
+            <button type="submit">Сохранить изменения</button>
+        </form>
+    </div>
+</div>
+
+<!-- Контекстное меню -->
+<div id="context-menu" class="context-menu" style="display: none;">
+    <ul>
+        <li onclick="editArticle()">Редактировать</li>
+        <li onclick="deleteArticle()">Удалить</li>
+    </ul>
+</div>
+    <script src="./js/navigation.js" defer></script>
+    <script src="./js/main.js"></script>
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script src="./js/info.js"></script>
+</body>
+</html>
